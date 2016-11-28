@@ -23,8 +23,12 @@
 <div id=container>
 
 
-	<div id=content>
-		KONTENT
+	<div id=content style="text-align: center;">
+		</br><br/><br/>
+		nr tel: 500 600 050 <br/>
+		mail: <a href="mailto:lux@uu1.ovh">lux@uul.ovh</a> </br><br/>
+		Adres: 2874 Augusta Park <br/>
+		10579 PUTNAM VALLEY, New York
 		 
 	</div>
 	<div id=leftnav>

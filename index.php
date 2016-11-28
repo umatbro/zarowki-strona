@@ -5,7 +5,7 @@
 
 <html lang=pl>
 <head>
-<meta charset=utf-8 />
+<meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatibile" content="IE=edge,chrome=1" />
 <title>Lux - sklep internetowy</title>
 <meta name="description" content="Sprzedaż żarówek" />

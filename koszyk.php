@@ -13,15 +13,8 @@
 			$connection_error = "Błąd połączenia: ".$connection -> connect_error;
 		}
 		
-		//ZAPYTANIE SQL
-		$sql_query = "SELECT * FROM produkty WHERE id like $id;";
-		
-		//ilość zwróconych rekordów
-		/*$result = $connection->query($sql_query);
-		$rowsReturned = $result->num_rows; */
 		
 
-	//if(isset($connection) && !isset($connection_error)) {$connection->close();}
 	?>
 
 
@@ -48,34 +41,32 @@
 
 
 	<div id=content style="margin-top:40px;">
-		<?php /*
-			$_quer = $_SESSION['lista'][1];
-			$result = $connection->query("SELECT * FROM produkty WHERE id = $_quer;");
-			$row = $result-> fetch_assoc();
-			displayProductOrder($row['obraz'],$row['marka'],$row['model'],$row['mocwat'],$row['cena'],1,1) */ ?>
+		<?php if(isset($_SESSION['komunikat'])) {echo $_SESSION['komunikat']."<br/>"; unset($_SESSION['komunikat']);} ?>
 		<?php
 		if(isset($_SESSION['zamowien']) && $_SESSION['zamowien'] > 0)
 		{
-			$pelnaCena=0;
+			$_SESSION['pelna-cena']=0;
 			echo '<a href="php/addtocart.php?delete=1" class="pagecontrol">usuń zawartość koszyka</a> <br /><br />';
-			for ( $i = 1; $i<$_SESSION['zamowien']+1 ; $i++ )
+			for ( $i = 0; $i<$_SESSION['indeks_zamowien'] ; $i++ )
 			{
-				$quer = $_SESSION['lista'][$i];
-				$result = $connection->query("SELECT * FROM produkty WHERE id like $quer;");
-				$row = $result->fetch_assoc();
-				if(isset($_SESSION['lista'][$i]))//echo "<a href=php/addtocart.php?removeProduct=$i>".$_SESSION['lista'][$i].'</a>'."<br/> ";
-				{
-					//sprawdzenie powtórzeń - TUTAJ LETKIE BŁĘDY
-					for ($j=1;$j<$i;$j++)
-					{
-						if(!isset($_SESSION['sztuk'][$_SESSION['lista'][$i]])) $_SESSION['sztuk'][$_SESSION['lista'][$i]] = 2;
-						if($_SESSION['lista'][$i] == $_SESSION['lista'][$j]) $_SESSION['sztuk'][$_SESSION['lista'][$i]]++;
-					}
-					displayProductOrder($row['obraz'],$row['marka'],$row['model'],$row['mocwat'],$row['cena'],$_SESSION['sztuk'][$_SESSION['lista'][$i]],$i);
-					$pelnaCena+=$row['cena'];
-				}
+				$prodID = $_SESSION['klucze'][$i];
+				$sztuk = $_SESSION['sztuk'][$prodID];
+				displayProductOrder($prodID, $sztuk, $connection);
+				//if(isset($_SESSION['lista'][$i])) echo "<a href=php/addtocart.php?removeProduct=$i>".$_SESSION['lista'][$i].'</a>'."<br/> ";
 			}
-			echo '<br/><br/><span style="text-align:right">Cena całości: '.$pelnaCena." zł</span>";
+			echo "CENA: ".$_SESSION['pelna-cena'];
+			?>
+			<br/>
+			<br/>
+			<form method=post action="checkout.php">
+				<input type=submit value="ZAMÓW" />
+			</form>
+			
+			
+			<?php
+			//echo '<br/><br/><span style="text-align:right">Cena całości: '.$pelnaCena." zł</span>";
+			//echo "<br/>".$_SESSION['indeks_zamowien'].": indeks zamowine. sztuk ".$_SESSION['sztuk'][3]."</br>";
+			//echo print_r($_SESSION['klucze']);
 		}
 		
 		else echo "Koszyk pusty</br>";
